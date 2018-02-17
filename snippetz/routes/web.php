@@ -15,9 +15,11 @@ Route::get('/', 'SnippetController@index');
 
 Route::resource('snippets', 'SnippetController');
 
-Route::post('/examples/{snippet}', 'SnippetController@storeExample');
+Route::post('/examples/{snippet}', 'SnippetController@storeExample')->name('snippets.example');
 
 Route::get('/tags/{tag}', 'TagController@index');
+
+Route::get('/language/{language}', 'languageController@index');
 
 Auth::routes();
 

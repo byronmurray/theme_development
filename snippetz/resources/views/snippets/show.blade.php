@@ -2,78 +2,78 @@
 
 @section('content')
 
-<h1>{{ $snippet->title }} </h1>
+  @include('partials.forms.edit_snippet_title')
+  <br>
 
-<button type="button" name="button" class="btn btn-info pull-right">edit</button>
-<br>
-<small>{{ $snippet->created_at }} </small>
+  <small>{{ $snippet->created_at }} </small>
+  <p>language: {{ $snippet->language->name }}</p>
+  <hr>
 
+  @include('partials.forms.edit_snippet_description')
+  <hr>
 
-<hr>
+  @include('partials.forms.edit_snippet_snippet')
 
-<h2>Description</h2>
-<div class="description">
-  {{ $snippet->description }}
-</div>
+  @include('partials.show_examples')
 
-<p>language: {{ $snippet->language }}</p>
+  @include('partials.show_tags')
 
-<hr>
+  <br><br><br>
 
-<h2>Snippet</h2>
-<div class="editor">
-  {{ $snippet->snippet }}
-</div>
+  <h2 data-toggle="collapse" href="#collapseExample" aria-expanded="false">Add Examples and use cases of snippet</h2>
 
-@if (count($snippet->examples) )
-  <h2>Examples</h2>
-  @foreach ($snippet->examples as $example)
-
-    <div class="description">
-      {{ $example->description }}
-    </div>
-
-    <div class="editor">
-      {{ $example->snippet }}
-    </div>
-
-  @endforeach
-@endif
-
-@if (count($snippet->tags) )
-  <h2>Tags</h2>
-  @foreach ($snippet->tags as $tag)
-    <a href="/tags/{{ $tag->name }}"> {{ $tag->name }} </a>
-  @endforeach
-@endif
-
-
-<br><br><br>
-
-<h2>Add Examples and use cases of snippet</h2>
-
-{!! Form::open(['url' => '/examples/1', 'method' => 'post']) !!}
-
-  <div class="form-group">
-    {{ Form::label('description', 'description') }}
-    {{ Form::textarea('description', '', ['class' => 'form-control']) }}
+  <div class="collapse" id="collapseExample">
+    @include('partials.forms.create_example')
   </div>
 
-  <div class="form-group">
-    {{ Form::label('snippet', 'snippet') }}
-    <div class="editor"></div>
-    {{ Form::textarea('snippet', '', ['class' => 'form-control hidden-xs-up']) }}
-  </div>
+  <br>
 
-  <div class="form-group">
-    {{ Form::submit('Add', ['class' => 'form-control btn-primary']) }}
-  </div>
+  flash message<br>
+  Need validation<br>
 
-{!! Form::close() !!}
-<br>
-Hide form till add example is clicked<br>
+@endsection
 
-flash message<br>
-Need validation<br>
+@section('scripts')
+  <script src={{ asset('/js/autosize.js') }}></script>
+	<script>
+		autosize(document.querySelectorAll('textarea'));
+    autosize($('.editor'));
+	</script>
+
+  <script>
+
+    $description = $('#form-description');
+    $description.find('.btn').hide();
+
+    $description.find('.description').keyup(function() {
+      $description.find('.btn').show();
+    });
+
+    function updateSnippet($form_id, $text_class) {
+
+      // make this a function
+      $form = $($form_id);
+      // // get title value first incase cancel is selected
+      field_val = $($text_class).val();
+
+      $form.find('.btn').hide();
+
+      $form.find($text_class).keyup(function() {
+        $form.find('.btn').show();
+      });
+
+      // click cancel
+      $form.find('.cancel').on('click', function() {
+        $form.find('.btn').hide();
+        $($text_class).val(field_val);
+      });
+
+    }
+
+    updateSnippet('#form-title', '.snippet-title');
+
+
+
+  </script>
 
 @endsection

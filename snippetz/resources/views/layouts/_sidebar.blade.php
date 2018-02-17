@@ -1,47 +1,43 @@
 <nav class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar">
   <ul class="nav nav-pills flex-column">
-    <h2>Favs</h2>
-    <li class="nav-item">
-      <a class="nav-link active" href="#">Overview <span class="sr-only">(current)</span></a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Reports</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Analytics</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Export</a>
-    </li>
+    <h2>Recent Activity</h2>
+
+      @foreach ($snippets as $snippet)
+        <li class="nav-item">
+          <a class="nav-link" href="/snippets/{{ $snippet->id }}"> {{ $snippet->title }} </a>
+        </li>
+      @endforeach
+
   </ul>
 
   <ul class="nav nav-pills flex-column">
     <h2>Languages</h2>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Nav item</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Nav item again</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">One more nav</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Another nav item</a>
-    </li>
+
+      @foreach ($languages as $language)
+        @if (count( $language->snippets ))
+          <li class="nav-item">
+            <a class="nav-link" href="/language/{{ $language->name }}"> {{ $language->name }}
+              <span class="badge badge-pill badge-default">{{ count( $language->snippets ) }}</span>
+            </a>
+          </li>
+        @endif
+      @endforeach
+
   </ul>
 
   <ul class="nav nav-pills flex-column">
     <h2>Tags</h2>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Nav item again</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">One more nav</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Another nav item</a>
-    </li>
+
+      @foreach ($tags as $tag)
+        @if (count( $tag->snippets ))
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/{{ $tag->name }}"> {{ $tag->name }}
+              <span class="badge badge-pill badge-default">{{ count( $tag->snippets ) }}</span>
+            </a>
+          </li>
+        @endif
+      @endforeach
+
   </ul>
-  
+
 </nav>
